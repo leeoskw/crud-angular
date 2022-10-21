@@ -8,16 +8,17 @@ import { Product } from './product.model';
   providedIn: 'root'
 })
 export class ProductService {
-  
+
   baseUrl = "http://localhost:3001/products"
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient) { }
 
-  showMessage(msg: string): void {
+  showMessage(msg: string, isError: boolean = false): void {
     this.snackBar.open(msg, '', {
       duration: 3000,
       horizontalPosition: "right",
-      verticalPosition: "top"
+      verticalPosition: "top",
+      panelClass: isError ? ['msg-error'] : ['msg-success']
     })
   }
 
@@ -25,11 +26,11 @@ export class ProductService {
     return this.http.post<Product>(this.baseUrl, product)
   }
 
-  read(): Observable<Product[]>{
+  read(): Observable<Product[]> {
     return this.http.get<Product[]>(this.baseUrl)
   }
 
-  readById(id: string): Observable<Product>{
+  readById(id: string): Observable<Product> {
     const url = `${this.baseUrl}/${id}`
     return this.http.get<Product>(url)
   }
@@ -39,7 +40,7 @@ export class ProductService {
     return this.http.put<Product>(url, product)
   }
 
-  delete(id: string): Observable<Product>{
+  delete(id: string): Observable<Product> {
     const url = `${this.baseUrl}/${id}`
     return this.http.delete<Product>(url)
   }
